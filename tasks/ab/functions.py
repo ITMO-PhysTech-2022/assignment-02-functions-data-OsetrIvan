@@ -19,14 +19,12 @@ def print_tree(size: int):
     """
     Функция выводит елочку из size сегментов размерами от 1 до size
     """
-
     def _print_segment(height: int):
-        """
-        Функция выводит сегмент елочки размера height
-        """
-        ...
+        for key in range(height):
+            print(' ' * (size - key - 1) + '*' * (2 * key + 1) + ' '' ' * (size - key - 1))
 
-    ...
+    for j in range(1, size + 1):
+        _print_segment(j)
 
 
 # RECURSION
@@ -35,7 +33,10 @@ def generate_json(depth: int):
     """
     Функция генерирует словарь (dict) с уровнем вложенности depth
     """
-    ...
+    if depth == 1:
+        return {"1": "pobeda", "2": "s pivom", "3": "!"}
+    elif depth > 1:
+        return {"1": "pobeda", "2": "s pivom", "3": generate_json(depth - 1)}
 
 
 def wtf():
@@ -65,7 +66,10 @@ def mex(*args):
     то есть minimal excluded - минимальное целое неотрицательное число,
     отсутствующее среди них
     """
-    ...
+    count = 0
+    while True:
+        if count not in args:
+            return count
 
 
 def replace_keys(data: dict[str, Any], **kwargs: str):
@@ -74,7 +78,14 @@ def replace_keys(data: dict[str, Any], **kwargs: str):
     key=value, и возвращает копию этого словаря, в котором каждый ключ key
     переименован в соответствующий ему value
     """
-    ...
+    res = {}
+    for i in data:
+        if i in kwargs.keys():
+            res[kwargs[i]] = data[i]
+        else:
+            res[i] = data[i]
+
+    return res
 
 
 # HIGH ORDER
@@ -85,7 +96,13 @@ def count_calls_until(f: Callable, start, condition: Callable[..., bool]):
     и условие остановки, и возвращает количество последовательных вызовов f от
     значения start, пока результат не начнет удовлетворять условию остановки
     """
-    ...
+    c = 0
+    x = start
+    while not condition(x):
+        x = f(x)
+        c += 1
+
+    return c
 
 
 def bind(f: Callable, **kwargs):
@@ -94,4 +111,4 @@ def bind(f: Callable, **kwargs):
     возвращает новую функцию, вызов которой идентичен вызову f, но с уже
     заранее подставленными указанными в **kwargs аргументами
     """
-    ...
+    return lambda **kwargs1: f(**dict(kwargs, **kwargs1))
